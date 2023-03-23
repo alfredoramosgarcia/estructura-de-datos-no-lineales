@@ -10,6 +10,13 @@ int max(int a, int b){
         return b;
 }
 
+int min(int a, int b){
+    if (a>b)
+        return b;
+    else
+        return a;
+}
+
 template <typename T>
 int numHijos(typename Agen<T>::nodo n, Agen<T> A){
 
@@ -33,13 +40,7 @@ int esHoja(typename Agen<T>::nodo n, Agen<T> A){
 }
 
 template <typename T>
-int alturaAgen(Agen<T> A){
-
-    return alturaAgen_REC(A.raiz(), A);
-}
-
-template <typename T>
-int alturaAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
+int alturaNodoAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
 
     typename Agen<T>::nodo hijo;
     int maximo;
@@ -50,7 +51,7 @@ int alturaAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
         hijo = A.hijoIzqdo(n);
 
         while(hijo != Agen<T>::NODO_NULO){
-            maximo = 1 + max(maximo, alturaAgen_REC(A.hijoIzqdo(hijo), A));
+            maximo = max(maximo, 1 + alturaNodoAgen_REC(hijo, A));
             hijo = A.hermDrcho(hijo);
         }
 
@@ -95,8 +96,8 @@ int gradoAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
 template <typename T>
 int profundidadNodo (typename Agen<T>::nodo n, Agen<T> A){
 
-    if (n == A.raiz())
-        return 0;
+    if (n == Agen<T>::NODO_NULO)
+        return -1;
     else
         return 1 + profundidadNodo(A.padre(n), A);
 }
@@ -113,18 +114,75 @@ template <typename T>
 int desequilibrioAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
 
     typename Agen<T>::nodo hijo;
+    int maximo, minimo, desequilibrio;
 
-    if (esHoja(n, A))
-        return alturaAgen(A) - profundidadNodo(n,A);
-    else{
+    if (n == Agen<T>::NODO_NULO){
+        return 0;
+
+    }else{
+
+        hijo = A.hijoIzqdo(n);
+        maximo = 0;
+        if(hijo  != Agen<T>::NODO_NULO) minimo = alturaNodoAgen_REC(hijo, A);
+        else minimo = 0;
+        
+        while(hijo != Agen<T>::NODO_NULO){
+            minimo = min(minimo, alturaNodoAgen_REC(hijo, A));
+            maximo = max(maximo, alturaNodoAgen_REC(hijo, A));
+            hijo = A.hermDrcho(hijo);
+        }
+
+        desequilibrio = maximo - minimo;
         hijo = A.hijoIzqdo(n);
 
         while(hijo != Agen<T>::NODO_NULO){
-            desequilibrioAgen_REC(hijo, A);
+            desequilibrio = max(desequilibrio, desequilibrioAgen_REC(hijo, A));
             hijo = A.hermDrcho(hijo);
         }
+
+        return desequilibrio;
+        
     }
 
-    return 0;
 }
+
+// EJERCICIO 4 - PODA NODO
+
+template <typename T>
+typename Agen<T>::nodo buscar (const char e, Agen<T> A){
+
+    if(A.raiz() == Agen<T>::NODO_NULO) return Agen<T>::NODO_NULO;
+    else return buscarREC(e, A.raiz(), A);
+}
+
+template <typename T>
+typename Agen<T>::nodo buscarREC (const char e,typename Agen<T>::nodo n, Agen<T>& A){
+
+    typename Agen<T>::nodo hijo, bus;
+
+
+    if(A.elemento(n) == e) return n;
+    else{
+        typename Agen<T>::nodo aux = buscarREC(e, A.hijoIzqdo(n), A);
+            if( aux != Agen<T>::NODO_NULO && A.elemento(aux) == e ) return aux;
+            else return buscarREC(e, A.hermDrcho(n), A);
+    }
+}
+
+template <typename T>
+void poda(typename Agen<T>::nodo n, Agen<T> A){
+    
+    typename Agen<T>::nodo hijo;
+    if(n != Agen<T>::NODO_NULO){
+    if( A.hijoIzqdo(n) != Agen<T>::NODO_NULO )
+        {
+            poda(A.hijoIzqdo(n), A);
+            A.eliminarHijoIzqdo(n);
+        }
+        if( A.hermDrcho(n) != Agen<T>::NODO_NULO )
+        {
+            poda(A.hermDrcho(n), A);
+            A.eliminarHermDrcho(n);
+        }
+}}
 

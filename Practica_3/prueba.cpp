@@ -25,4 +25,11 @@ fe.close();
 
     cout<<"El grado del arbol es "<<gradoAgen(B)<<endl;
     cout<<"El desequilibrio del arbol es "<<desequilibrioAgen(B)<<endl;
+
+    typename Agen<tElto>::nodo n = Agen<tElto>::NODO_NULO;
+    n = buscar('o', A);
+    if (n != Agen<tElto>::NODO_NULO) cout<<"NO ES NODO NULO";
+    else cout<<" ES NODO NULO";
+    poda(n, A);
+
 }
