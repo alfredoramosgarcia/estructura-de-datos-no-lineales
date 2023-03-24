@@ -76,3 +76,26 @@ int desequilibrioAbin_REC(typename Abin<T>::nodo n, Abin<T> A){
 }
 
 //EJERCICIO 7
+
+template <typename T>
+int pseudocompletoAbin(Abin<T> A){
+    return pseudocompletoAbin_REC(A.raiz(), A);
+}
+
+template <typename T>
+int pseudocompletoAbin_REC(typename Abin<T>::nodo n, Abin<T> A){
+
+    int altura = alturaAbin(A);
+    bool bandera = true ;
+
+    if(n == Abin<T>::NODO_NULO){
+        return 0;
+    }else{
+        if(alturaAbin_Rec(n,A) == altura - 1){
+            if(A.hijoIzqdo(n) == Abin<T>::NODO_NULO || A.hijoDrcho(n)  == Abin<T>::NODO_NULO) bandera = true;
+            if(A.hijoIzqdo(n) == Abin<T>::NODO_NULO && A.hijoDrcho(n)  == Abin<T>::NODO_NULO) bandera = true;
+        }else{
+            bandera = 
+        }
+    }
+}
