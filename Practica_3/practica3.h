@@ -1,68 +1,12 @@
 #include <iostream>
+#include "agen.h"
+#include "auxiliares.h"
 
 using namespace std;
-//FUNCIONES AUXILIARES
 
-int max(int a, int b){
-    if (a>b)
-        return a;
-    else
-        return b;
-}
 
-int min(int a, int b){
-    if (a>b)
-        return b;
-    else
-        return a;
-}
-
-template <typename T>
-int numHijos(typename Agen<T>::nodo n, Agen<T> A){
-
-    typename Agen<T>::nodo hijo = A.hijoIzqdo(n);
-    int cont = 0;
-    while (hijo != Agen<T>::NODO_NULO){
-        cont++;
-        hijo = A.hermDrcho(hijo);
-    }
-
-    return cont;    
-}
-
-template <typename T>
-int esHoja(typename Agen<T>::nodo n, Agen<T> A){
-
-    if (A.hijoIzqdo(n) == Agen<T>::NODO_NULO)
-        return true;
-    else
-        return false;
-}
-
-template <typename T>
-int alturaNodoAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
-
-    typename Agen<T>::nodo hijo;
-    int maximo;
-    if (esHoja(n, A))
-        return 0;
-    else{
-        maximo = 0;
-        hijo = A.hijoIzqdo(n);
-
-        while(hijo != Agen<T>::NODO_NULO){
-            maximo = max(maximo, 1 + alturaNodoAgen_REC(hijo, A));
-            hijo = A.hermDrcho(hijo);
-        }
-
-        return maximo;
-
-    }
-}
 
 //EJERCICIO 1 - GRADO DEL ARBOL
-
-#include "agen.h"
 
 template <typename T>
 int gradoAgen (Agen<T> A){
@@ -115,35 +59,36 @@ int desequilibrioAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
 
     typename Agen<T>::nodo hijo;
     int maximo, minimo, desequilibrio;
-
-    if (n == Agen<T>::NODO_NULO){
+    
+    maximo = alturaAgen(A);
+    if (esHoja(n,A)) minimo = profundidadNodo(n, A);
+    else minimo = maximo; //Se le asigna este valor para no tenerlo en cuenta, buscamos el nodo hoja con menor longitud 
+    
+    if (n == Agen<T>::NODO_NULO)
         return 0;
-
-    }else{
-
-        hijo = A.hijoIzqdo(n);
-        maximo = 0;
-        if(hijo  != Agen<T>::NODO_NULO) minimo = alturaNodoAgen_REC(hijo, A);
-        else minimo = 0;
+    else{
         
+        hijo = A.hijoIzqdo(n);
+
         while(hijo != Agen<T>::NODO_NULO){
-            minimo = min(minimo, alturaNodoAgen_REC(hijo, A));
-            maximo = max(maximo, alturaNodoAgen_REC(hijo, A));
+            if(esHoja(hijo, A)) minimo = min(minimo, profundidadNodo(hijo, A));
+            else minimo = maximo; //Se le asigna este valor para no tenerlo en cuenta, buscamos el nodo hoja con menor longitud 
             hijo = A.hermDrcho(hijo);
         }
 
         desequilibrio = maximo - minimo;
+
+        cout<<"Nodo "<<A.elemento(n)<<" Desequilibrio: "<<desequilibrio<<" Maximo: "<<maximo<<" Minimo: "<<minimo<<endl;
+
         hijo = A.hijoIzqdo(n);
 
         while(hijo != Agen<T>::NODO_NULO){
             desequilibrio = max(desequilibrio, desequilibrioAgen_REC(hijo, A));
             hijo = A.hermDrcho(hijo);
         }
-
         return desequilibrio;
         
-    }
-
+}
 }
 
 // EJERCICIO 4 - PODA NODO
@@ -185,4 +130,3 @@ void poda(typename Agen<T>::nodo n, Agen<T> A){
             A.eliminarHermDrcho(n);
         }
 }}
-

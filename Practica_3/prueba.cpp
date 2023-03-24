@@ -24,7 +24,8 @@ fe.close();
 //imprimirAgen(B); // En std::cout
 
     cout<<"El grado del arbol es "<<gradoAgen(B)<<endl;
-    cout<<"El desequilibrio del arbol es "<<desequilibrioAgen(B)<<endl;
+    //cout<<"El desequilibrio del arbol es ";
+    cout<<desequilibrioAgen(B)<<" -> Este es el desequilibrio del arbol general"<<endl;
 
     typename Agen<tElto>::nodo n = Agen<tElto>::NODO_NULO;
     n = buscar('o', A);
