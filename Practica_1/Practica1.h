@@ -47,4 +47,32 @@ int profundidadNodoAbin(typename Abin<T>::nodo n, const Abin<T> &A){
         return 0;
     else
         return 1 + profundidadNodoAbin(A.padre(n), A);
+}  
+
+//EJERCICIO 6
+
+template <typename T>
+int desequilibrioAbin(Abin<T> A){
+
+    return desequilibrioAbin_REC(A.raiz(), A);
 }
+
+template <typename T>
+int desequilibrioAbin_REC(typename Abin<T>::nodo n, Abin<T> A){
+
+
+    int desequilibrioI, desequilibrioD;
+
+    if (n == Abin<T>::NODO_NULO)
+        return 0;
+    else{
+        desequilibrioI = alturaAbin_Rec(A.hijoIzqdo(n), A);
+        desequilibrioD = alturaAbin_Rec(A.hijoDrcho(n), A);
+
+        return std::max(desequilibrioI, desequilibrioD);
+
+        
+    }
+}
+
+//EJERCICIO 7

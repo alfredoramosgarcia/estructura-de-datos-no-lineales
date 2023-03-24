@@ -21,8 +21,9 @@ int main ()
 
    int a = contarNodosAbin(B);
    int b = alturaAbin(B);
-   int c = profundidadNodoAbin(, A);
+   //int c = profundidadNodoAbin(, A);
 
    cout<<"El arbol tiene "<<a<<" nodos"<<endl;
    cout<<"El arbol tiene una altura de "<<b<<endl;
+   cout<<"El desequilibrio del arbol es "<<desequilibrioAbin(B)<<endl;
 }

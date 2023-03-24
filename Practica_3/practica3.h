@@ -118,15 +118,11 @@ template <typename T>
 void poda(typename Agen<T>::nodo n, Agen<T> A){
     
     typename Agen<T>::nodo hijo;
-    if(n != Agen<T>::NODO_NULO){
-    if( A.hijoIzqdo(n) != Agen<T>::NODO_NULO )
-        {
-            poda(A.hijoIzqdo(n), A);
-            A.eliminarHijoIzqdo(n);
-        }
-        if( A.hermDrcho(n) != Agen<T>::NODO_NULO )
-        {
-            poda(A.hermDrcho(n), A);
-            A.eliminarHermDrcho(n);
-        }
-}}
+
+    while(A.hijoIzqdo(n) != Agen<T>::NODO_NULO){
+        A.eliminarHijoIzqdo(n);
+    }
+
+    n.
+        
+}
