@@ -69,7 +69,7 @@ int desequilibrioAbin_REC(typename Abin<T>::nodo n, Abin<T> A){
         desequilibrioI = alturaAbin_Rec(A.hijoIzqdo(n), A);
         desequilibrioD = alturaAbin_Rec(A.hijoDrcho(n), A);
 
-        return std::max(desequilibrioI, desequilibrioD);
+        return std::abs(desequilibrioI - desequilibrioD);
 
         
     }
@@ -78,24 +78,23 @@ int desequilibrioAbin_REC(typename Abin<T>::nodo n, Abin<T> A){
 //EJERCICIO 7
 
 template <typename T>
-int pseudocompletoAbin(Abin<T> A){
-    return pseudocompletoAbin_REC(A.raiz(), A);
+bool pseudocompletoAbin(Abin<T> A){
+    return pseudocompletoAbin_REC(A.raiz(), A, 0, alturaAbin(A) - 1);
 }
 
 template <typename T>
-int pseudocompletoAbin_REC(typename Abin<T>::nodo n, Abin<T> A){
+bool pseudocompletoAbin_REC(typename Abin<T>::nodo n, Abin<T> A, int nivelActual, int penultimoNivel){
 
-    int altura = alturaAbin(A);
-    bool bandera = true ;
-
-    if(n == Abin<T>::NODO_NULO){
-        return 0;
-    }else{
-        if(alturaAbin_Rec(n,A) == altura - 1){
-            if(A.hijoIzqdo(n) == Abin<T>::NODO_NULO || A.hijoDrcho(n)  == Abin<T>::NODO_NULO) bandera = true;
-            if(A.hijoIzqdo(n) == Abin<T>::NODO_NULO && A.hijoDrcho(n)  == Abin<T>::NODO_NULO) bandera = true;
-        }else{
-            bandera = 
-        }
-    }
+    if( n != Abin<T>::NODO_NULO )
+		if (nivelActual == penultimoNivel)
+			if (A.hijoIzqdo(n) == Abin<T>::NODO_NULO && A.hijoDrcho(n) == Abin<T>::NODO_NULO)
+				return true;
+			else if (A.hijoIzqdo(n) != Abin<T>::NODO_NULO && A.hijoDrcho(n) != Abin<T>::NODO_NULO)
+				return true;
+			else
+				return false;
+		else
+			return pseudocompletoAbin_REC(A.hijoIzqdo(n), A, nivelActual + 1, penultimoNivel) && pseudocompletoAbin_REC(A.hijoDrcho(n), A, nivelActual + 1, penultimoNivel);
+	else 
+		return true;
 }

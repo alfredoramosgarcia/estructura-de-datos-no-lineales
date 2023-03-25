@@ -26,4 +26,5 @@ int main ()
    cout<<"El arbol tiene "<<a<<" nodos"<<endl;
    cout<<"El arbol tiene una altura de "<<b<<endl;
    cout<<"El desequilibrio del arbol es "<<desequilibrioAbin(B)<<endl;
+   cout<<"Arbol pseudocompleto: "<<pseudocompletoAbin(B)<<endl;
 }
