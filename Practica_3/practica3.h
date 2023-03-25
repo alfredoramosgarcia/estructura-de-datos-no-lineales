@@ -93,36 +93,69 @@ int desequilibrioAgen_REC(typename Agen<T>::nodo n, Agen<T> A){
 
 // EJERCICIO 4 - PODA NODO
 
-template <typename T>
-typename Agen<T>::nodo buscar (const char e, Agen<T> A){
 
-    if(A.raiz() == Agen<T>::NODO_NULO) return Agen<T>::NODO_NULO;
-    else return buscarREC(e, A.raiz(), A);
+template <typename T>
+void eliminar_ramas(Agen<T>& A,typename Agen<T>::nodo n)
+{
+
+  if(A.hermDrcho(n)!=Agen<T>::NODO_NULO)
+  {
+    eliminar_ramas(A,A.hermDrcho(n));
+    A.eliminarHermDrcho(n);
+  }
+
+  if(A.hijoIzqdo(n)!=Agen<T>::NODO_NULO)
+  {
+    eliminar_ramas(A,A.hijoIzqdo(n));
+    A.eliminarHijoIzqdo(n);
+  }
+
+}
+
+
+template <typename T>
+typename Agen<T>::nodo buscar(const Agen<T>& A,typename Agen<T>::nodo n,T t)
+{
+
+  if(n==Agen<T>::NODO_NULO)return Agen<T>::NODO_NULO;
+  else
+  {
+    if(A.elemento(n)==t)return n;
+    else
+    {
+      typename Agen<T>::nodo m;
+      n=A.hijoIzqdo(n);
+      while(n!=Agen<T>::NODO_NULO || A.elemento(m)!=t)
+      {
+        m=buscar(A, A.hijoIzqdo(n), t);
+        n=A.hermDrcho(n);
+      }
+      return m;
+    }
+  }
 }
 
 template <typename T>
-typename Agen<T>::nodo buscarREC (const char e,typename Agen<T>::nodo n, Agen<T>& A){
+void poda(Agen<T>& A,T t)//La poda elimina el propio nodo tb
+{
+  typename Agen<T>::nodo n=buscar(A,A.raiz(),t);
+  if(n!=Agen<T>::NODO_NULO)
+  {
+    if(A.padre(n)!=Agen<T>::NODO_NULO)
+    {
+      eliminar_ramas(A,A.hijoIzqdo(n));
+      A.eliminarHijoIzqdo(n);
+      n=A.padre(n);
+      A.eliminarHijoIzqdo(n);
 
-    typename Agen<T>::nodo hijo, bus;
-
-
-    if(A.elemento(n) == e) return n;
-    else{
-        typename Agen<T>::nodo aux = buscarREC(e, A.hijoIzqdo(n), A);
-            if( aux != Agen<T>::NODO_NULO && A.elemento(aux) == e ) return aux;
-            else return buscarREC(e, A.hermDrcho(n), A);
     }
-}
-
-template <typename T>
-void poda(typename Agen<T>::nodo n, Agen<T> A){
-    
-    typename Agen<T>::nodo hijo;
-
-    while(A.hijoIzqdo(n) != Agen<T>::NODO_NULO){
-        A.eliminarHijoIzqdo(n);
+  else
+    {
+      A.eliminarRaiz();
     }
-
-    n.
-        
+  }
+  else
+  {
+    cout<<"Elemento "<<t<<" no encontrado"<<endl;
+  }
 }

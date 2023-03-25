@@ -27,10 +27,13 @@ fe.close();
     //cout<<"El desequilibrio del arbol es ";
     cout<<desequilibrioAgen(B)<<" -> Este es el desequilibrio del arbol general"<<endl;
 
-    typename Agen<tElto>::nodo n = Agen<tElto>::NODO_NULO;
-    n = buscar('o', A);
-    if (n != Agen<tElto>::NODO_NULO) cout<<"NO ES NODO NULO";
-    else cout<<" ES NODO NULO";
-    poda(n, A);
+    
+    cout<<"Arbol antes de la poda"<<endl;
+    imprimirAgen(B); cout<<endl;
+
+    poda(B, 'o');
+
+    cout<<"Arbol despues de la poda"<<endl;
+    imprimirAgen(B); cout<<endl;
 
 }
