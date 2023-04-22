@@ -159,3 +159,5 @@ void poda(Agen<T>& A,T t)//La poda elimina el propio nodo tb
     cout<<"Elemento "<<t<<" no encontrado"<<endl;
   }
 }
+
+
