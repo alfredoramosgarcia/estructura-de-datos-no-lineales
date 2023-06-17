@@ -7,8 +7,8 @@
 using namespace std;
 typedef char tElto;
 const tElto fin = '#'; // fin de lectura
-template <typename T> bool similaresAgen(const Agen<T> A, const Agen<T> B);
-template <typename T> bool similaresAgen_REC(typename Agen<T>::nodo na, const Agen<T> A,typename Agen<T>::nodo nb, const Agen<T> B);
+template <typename T> bool similaresAgen(const Agen<T> &A, const Agen<T> &B);
+template <typename T> bool similaresAgen_REC(typename Agen<T>::nodo na, const Agen<T> &A,typename Agen<T>::nodo nb, const Agen<T> &B);
 //template <typename T> bool esHoja(typename Agen<T>::nodo n, const Agen<T> A);
 int main ()
 {
@@ -20,11 +20,11 @@ imprimirAgen(fs, A, fin); // En fichero.
 fs.close();
 cout << "\n*** Árbol A guardado en fichero agen.dat ***\n";*/
 //cout << "\n*** Lectura de árbol B de agen.dat ***\n";
-ifstream fe("agen.dat"); // Abrir fichero de entrada.
+/*ifstream fe("agen.dat"); // Abrir fichero de entrada.
 rellenarAgen(fe, A); // Desde fichero.
 fe.close();
 
-ifstream f("agen2.dat"); // Abrir fichero de entrada.
+*/ifstream f("agen2.dat"); // Abrir fichero de entrada.
 rellenarAgen(f, B); // Desde fichero.
 f.close();
 
@@ -37,16 +37,28 @@ f.close();
 
 
 template <typename T> 
-bool similaresAgen(const Agen<T> A, const Agen<T> B){
+bool similaresAgen(const Agen<T> &A, const Agen<T> &B){
 
     return similaresAgen_REC(A.raiz(), A, B.raiz(), B);
 }
 
 
 template <typename T> 
-bool similaresAgen_REC(typename Agen<T>::nodo na, const Agen<T> A,typename Agen<T>::nodo nb, const Agen<T> B){
+bool similaresAgen_REC(typename Agen<T>::nodo na, const Agen<T> &A,typename Agen<T>::nodo nb, const Agen<T> &B){
 
     bool similar = true;
+
+    if (na == Agen<T>::NODO_NULO){
+        if (nb == Agen<T>::NODO_NULO){
+            return true;
+        }
+    }
+
+    if (nb == Agen<T>::NODO_NULO){
+        if (na == Agen<T>::NODO_NULO){
+            return true;
+        }
+    }
     if (esHoja(na, A) && esHoja(nb,B)){
         if(A.elemento(na) != B.elemento(nb)) return false;
     }else{
